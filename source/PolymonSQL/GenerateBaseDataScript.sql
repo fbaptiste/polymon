@@ -27,6 +27,7 @@ select 'insert into MonitorType (Name, MonitorAssembly, EditorAssembly, MonitorX
 from MonitorType
 where MonitorAssembly <> 'PortalMonitor.dll'
 
+
 --MonitorTriggerActionType
 select '--MonitorActionTriggerType--'
 select 'delete from MonitorActionTriggerType'
