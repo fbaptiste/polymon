@@ -1,0 +1,36 @@
+************************************************
+**               RELEASE NOTES                **
+************************************************
+
+=================================================
+               Version 1.1.0
+=================================================
+
+To Do List
+----------
+TODO: Operator Post-Offline Time Alerting
+
+
+Bugs and Feature Updates
+------------------------
+- Added post-event scripting capabilities using PowerShell or VBScript. This allows users to create custom scripts
+	that are executed after a Monitor is run.
+- Fixed bug that caused errors creating database due to date internationalization issues.
+- Fixed problem running reports for Monitors with large number of counters (or very long counter names).
+- Fixed problem where Report charts did not honor counter ordering in database.
+- Changed Event History report so that dynamic date ranges such as Today, This Week, etc are no longer static based on when report was opened
+- Changed Uptime Analysis report so that dynamic date ranges such as Today, This Week, etc are no longer static based on when report was opened
+- Fixed XML escaping problem in Performance Monitor that was causing problems when setting counters that contained > or < characters.
+- Removed artificial trigger mod restriction on the UpDown control in Monitor Editor form.
+
+Database Changes
+-----------------
+- (07/12/2007): Added MonitorAction, MonitorActionTriggerType, ScriptEngine Tables
+- (07/12/2007): Populated data in MonitorActionTriggerType, ScriptEngine Tables
+- (07/12/2007): Added relationships between Monitor, MonitorAction, MonitorActionTriggerType and ScriptEngine tables.
+- (07/12/2007): Added polymon_hyb_SaveMonitorActionScript
+- (07/12/2007): Added polymon_sel_MonitorActionScripts
+- (08/30/2007): Modified sp's to allow longer dynamic sql strings: rpt_CounterData_CustomAverage, rpt_CounterData_Daily, rpt_CounterData_Monthly, rpt_CounterData_Raw, rpt_CounterData_Weekly 
+- (08/30/2007): Fixed dateformat issues (internationalization) in sp's: executive_MonitorMetadataLatestUpdateDT, polymon_sel_EventHistory, polymon_sel_HistMonitorCounters_Averages, polymon_sel_HistMonitorEvents_FreqDist, polymon_sel_PercUptimeAnalysis, rpt_CounterData_CustomAverage, rpt_CounterData_Daily, rpt_CounterData_Monthly, rpt_CounterData_Raw, rpt_CounterData_Weekly, rpt_StatusData_CustomFreq, rpt_StatusData_Monthly, rpt_StatusData_Raw, rpt_StatusData_Weekly, rpt_StatusSummary_Raw
+
+==============================================
