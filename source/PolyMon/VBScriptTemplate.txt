@@ -1,0 +1,26 @@
+'The following objects are available for use: MonitorStatus, Counters
+
+'MonitorStatus exposes the following properties: MonitorStatus.StatusID, MonitorStatus.Status
+'Status Codes: 1=OK, 2=Warn, 3=Fail
+
+'Counters is an enumerable list of Counter objects
+'Each Counter objects exposes the following properties: Counter.CounterName, Counter.CounterValue
+
+'Example: 
+'select case MonitorStatus.StatusID
+'	case OK
+'		<code to run when status is OK>
+'	case WARN
+'		<code to run when status is WARN>
+'	case FAIL
+'		<code to run when status is FAIL>
+'	case else
+'		<code to run when status is Unknown>
+'end select
+
+
+Const OK=1
+Const WARN=2
+Const FAIL=3
+
+'Insert your code here:

@@ -1,0 +1,563 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{727F494B-02FB-4F27-A0D2-52FCDD4B8849}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>PolyMonManager.My.MyApplication</StartupObject>
+    <RootNamespace>PolyMonManager</RootNamespace>
+    <AssemblyName>PolyMonManager</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <ApplicationIcon>PolyMon %2832x32%29.ico</ApplicationIcon>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/PolyMonManager/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph, Version=5.0.4.13542, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rd Party\ZedGraph\zedgraph_dll_5.0.4\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlertEventArgs.vb" />
+    <Compile Include="dlgDeleting.Designer.vb">
+      <DependentUpon>dlgDeleting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgDeleting.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgMonitor.Designer.vb">
+      <DependentUpon>dlgMonitor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgMonitor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgOrderGroups.Designer.vb">
+      <DependentUpon>dlgOrderGroups.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgOrderGroups.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgOrderPanels.Designer.vb">
+      <DependentUpon>dlgOrderPanels.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgOrderPanels.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAboutPolyMon.Designer.vb">
+      <DependentUpon>frmAboutPolyMon.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAboutPolyMon.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCurrentStatus.Designer.vb">
+      <DependentUpon>frmCurrentStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCurrentStatus.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDashboard.Designer.vb">
+      <DependentUpon>frmDashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEventHistory.Designer.vb">
+      <DependentUpon>frmEventHistory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEventHistory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFailuresWarnings.Designer.vb">
+      <DependentUpon>frmFailuresWarnings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmFailuresWarnings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGeneralSettings.Designer.vb">
+      <DependentUpon>frmGeneralSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGeneralSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMonitorDefs.Designer.vb">
+      <DependentUpon>frmMonitorDefs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMonitorDefs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMonitorTypes.Designer.vb">
+      <DependentUpon>frmMonitorTypes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMonitorTypes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOperators.Designer.vb">
+      <DependentUpon>frmOperators.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOperators.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPolyMonExecutive.Designer.vb">
+      <DependentUpon>frmPolyMonExecutive.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPolyMonExecutive.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportData.Designer.vb">
+      <DependentUpon>frmReportData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReports.Designer.vb">
+      <DependentUpon>frmReports.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmReports.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUptimeAnalysis.Designer.vb">
+      <DependentUpon>frmUptimeAnalysis.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUptimeAnalysis.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.vb" />
+    <Compile Include="UCMonitorPanel.Designer.vb">
+      <DependentUpon>UCMonitorPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UCMonitorPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UCMonitorPanelDetailsView.Designer.vb">
+      <DependentUpon>UCMonitorPanelDetailsView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UCMonitorPanelDetailsView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCMonitorPanelListView.Designer.vb">
+      <DependentUpon>UCMonitorPanelListView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UCMonitorPanelListView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCPanelGroup.Designer.vb">
+      <DependentUpon>UCPanelGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UCPanelGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserSettings.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="dlgDeleting.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgDeleting.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgMonitor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgMonitor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgOrderGroups.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgOrderGroups.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgOrderPanels.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>dlgOrderPanels.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAboutPolyMon.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmAboutPolyMon.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCurrentStatus.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmCurrentStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmDashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEventHistory.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmEventHistory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFailuresWarnings.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmFailuresWarnings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGeneralSettings.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmGeneralSettings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMonitorDefs.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMonitorDefs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMonitorTypes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmMonitorTypes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOperators.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmOperators.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPolyMonExecutive.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPolyMonExecutive.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportData.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmReportData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReports.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUptimeAnalysis.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmUptimeAnalysis.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCMonitorPanel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UCMonitorPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCMonitorPanelDetailsView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UCMonitorPanelDetailsView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCMonitorPanelListView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UCMonitorPanelListView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UCPanelGroup.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UCPanelGroup.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GenericMonitorEditor\GenericMonitorEditor.vbproj">
+      <Project>{04FB751F-CCCB-41AD-A1DB-BD15D99C618B}</Project>
+      <Name>GenericMonitorEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GenericMonitor\GenericMonitor.vbproj">
+      <Project>{78BDF177-308F-4400-A816-CF4ED9FBEF19}</Project>
+      <Name>GenericMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GenericXMLEditor\GenericXMLEditor.vbproj">
+      <Project>{A6641431-056C-41FC-B96C-5F05E05BF38C}</Project>
+      <Name>GenericXMLEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PolyMonNotifier\PolyMonNotifier.vbproj">
+      <Project>{3A2B17F1-9A73-49A5-A27E-64338DA102E2}</Project>
+      <Name>PolyMonNotifier</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PolyMon\PolyMon.vbproj">
+      <Project>{939BD601-4965-4E4C-843A-24F75C291D42}</Project>
+      <Name>PolyMon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Stop.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\folderopen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Unknown.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\ICS client.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\mstsc.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Monitor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Settings.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\View.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\SearchOperator.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Operator.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Operators.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Warning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\ServiceUnknown.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\ServicePaused.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\ServiceStarted1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\ServiceStarted.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\ServiceStopped.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="images\Settings2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ServiceStopped.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FullScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\error.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\otheroptions.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gear_32.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeleteHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_UndoHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddTableHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OrgChartHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewDocumentHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewCardHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewFolderHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RightArrow2HS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PageUpHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XMLFileHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FillDownHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Notify.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\ZedGraph.dll" />
+    <Content Include="bin\ZedGraph.xml" />
+    <Content Include="images\FullScreen.png" />
+    <Content Include="images\PolyMon.gif" />
+    <Content Include="images\PolyMon.PNG" />
+    <Content Include="images\TRFFC09.ICO" />
+    <Content Include="PolyMon %2832x32%29.ico" />
+    <None Include="ReleaseHistory.txt" />
+    <EmbeddedResource Include="Resources\VBScriptTemplate.txt" />
+    <None Include="Resources\PolyMonWarning.ico" />
+    <None Include="Resources\PolyMonOK.ico" />
+    <None Include="Resources\icoStatusOK.ico" />
+    <None Include="Resources\SystemHealth1.ico" />
+    <None Include="Resources\SystemHealth.ICO" />
+    <None Include="Resources\GeneralSettings.ICO" />
+    <None Include="Resources\Executive.ico" />
+    <None Include="Resources\MonitorTypes.ico" />
+    <None Include="Resources\Exit.ico" />
+    <None Include="Resources\Monitor Definitions.ico" />
+    <None Include="Resources\Event History.ico" />
+    <None Include="Resources\Alerts.ico" />
+    <None Include="Resources\Dashboard.ico" />
+    <None Include="Resources\Alerts21.ico" />
+    <None Include="Resources\Alerts2.ico" />
+    <None Include="Resources\icoAlerts.ico" />
+    <None Include="Resources\warning.ico" />
+    <None Include="Resources\mynetworkplaces.ico" />
+    <None Include="Resources\PolyMon.ico" />
+    <None Include="Resources\DataContainer_MovePreviousHS.png" />
+    <None Include="Resources\DataContainer_MoveNextHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)$(OutDir)..\..\*.dll $(ProjectDir)$(OutDir)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

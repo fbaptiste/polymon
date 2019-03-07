@@ -1,0 +1,26 @@
+# Microsoft Developer Studio Project File - Database Project
+Begin DataProject = "PolymonSQL"
+   MSDTVersion = "80"
+   SccProjectName = "SAK"
+   SccLocalPath = "SAK"
+   SccAuxPath = "SAK"
+   SccProvider = "SAK"
+   Begin Folder = "Archive"
+      Script = "Base Data.sql"
+      Script = "Functions.sql"
+      Script = "Schema.sql"
+      Script = "Stored Procedures.sql"
+   End
+   Begin Folder = "Create Scripts"
+      Script = "DB Version 1.00.sql"
+      Script = "DB Version 1.10.sql"
+   End
+   Begin DBRefFolder = "Database References"
+   End
+   Script = "GenerateBaseDataScript.sql"
+   Script = "TSData.sql"
+   Begin Folder = "Update Scripts"
+      Script = "Update DB 1.00 to 1.10.sql"
+      Script = "Update to DB Version 1.00.sql"
+   End
+End

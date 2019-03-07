@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+	 xmlns:Sql="http://schemas.microsoft.com/wix/SqlExtension"
+	 xmlns:Util="http://schemas.microsoft.com/wix/UtilExtension"
+   xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+ 
+  <Product Id="c88ead64-634c-4cf4-aed6-562c29cfcb38" Name="PolyMon" Language="1033"  Version="1.2.0.0" Manufacturer="PolyMon (CodePlex)" UpgradeCode="c6522de5-5efe-4f4f-b7e5-913f38675812">
+    <Package InstallerVersion="200" Compressed="yes" />
+    <Media Id="1" Cabinet="PolyMon.cab" EmbedCab="yes" />
+
+    <Condition Message="This application requires .NET Framework 2.0. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK20]]>
+    </Condition>
+
+    <Condition Message='You need to be an administrator to install this product'>
+      Privileged
+    </Condition>
+
+    <PropertyRef Id="NETFRAMEWORK20"/>
+
+    <!--Build Root Folder for PolyMon-->
+    <?define SrcRoot = "C:\CodePlex\PolymonOriginal"?>
+    <?define AscendRoot = "C:\Program Files (x86)\Ascend.NET Project\Ascend.NET Windows Forms Controls\version 1.0.0.6"?>
+
+    <!--The Add/Remove Programs Icon-->
+    <Icon Id="arpiconfile" SourceFile="$(var.SrcRoot)\PolyMonManager\PolyMon (32x32).ico" />
+    <UIRef Id="WixUI_Common" />
+    <UI>
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+      <TextStyle Id="MyFont_Bold" FaceName="Tahoma" Size="8" Bold="yes"/>
+      <TextStyle Id="MyFont_Italic" FaceName="Tahoma" Size="8" Italic="yes"/>
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="FeatureTree" />
+
+      <Property Id="ARPCOMMENTS" Value="PolyMon: Monitor.Measure.Analyze.Alert" />
+      <Property Id="ARPCONTACT" Value="Fred Baptiste" />
+      <Property Id="ARPPRODUCTICON" Value="arpiconfile" />
+      <Property Id="ARPHELPLINK" Value="http://polymon.codeplex.com" />
+      <!--<Property Id="ARPREADME" Value="http://polymon.codeplex.com/readme" />-->
+      <Property Id="ARPURLINFOABOUT" Value="Support can be found at &apos;http://polymon.codeplex.com&apos;" />
+      <!--<Property Id="ARPURLUPDATEINFO" Value="" />-->
+      <Property Id="ARPHELPTELEPHONE" Value="URL where users can find your support phone number" />
+      <Property Id="ARPAUTHORIZEDCDFPREFIX" Value="URL of the update channel for the application" />
+      <Property Id="ARPSIZE" Value="3" />
+
+      <Property Id="ARPNOREPAIR">1</Property>
+      <Property Id="ARPNOMODIFY">1</Property>
+      <Property Id="ALLUSERS">2</Property>
+
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg">LicenseAccepted = "1"</Publish>
+
+      <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">Installed</Publish>
+      <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg" Order="2">NOT Installed</Publish>
+      <Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="DBSetupDlg" Order="1"><![CDATA[&PolyMonDB=3]]></Publish>
+      <Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="ConnectionsDlg" Order="2"><![CDATA[ &PolyMonDB<>3 AND (&PolyMonManager=3 OR &PolyMonExecutive=3)]]></Publish>
+      <Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="3">
+        <!--<![CDATA[ &PolyMonDB<>3 AND &PolyMonManager<>3 AND &PolyMonExecutive<>3]]>-->
+      </Publish>
+
+      <Publish Dialog="DBSetupDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+      <Publish Dialog="DBSetupDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed</Publish>
+      <Publish Dialog="DBSetupDlg" Control="Next" Event="NewDialog" Value="ConnectionsDlg" Order="1"><![CDATA[&PolyMonManager=3 OR &PolyMonExecutive=3]]></Publish>
+      <Publish Dialog="DBSetupDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="2"></Publish>
+
+      <Publish Dialog="ConnectionsDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+      <Publish Dialog="ConnectionsDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed</Publish>
+      <Publish Dialog="ConnectionsDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="1">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+
+
+      <Dialog Id="DBSetupDlg" Width="370" Height="270" Title="[ProductName] Setup">
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}Database Setup Information" />
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="Please specify database location and authentication settings." />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+
+        <Control Id="DBServerLabel" Type="Text" X="20" Y="60" Width="290" Height="13" Text="Database Server:" />
+        <Control Id="DBServer" Type="Edit" X="20" Y="72" Width="320" Height="18" Property="DBSERVER">
+          <Property Id="DBSERVER" Value="localhost"/>
+          <Publish Property="CONNDBSERVER" Value ="[DBSERVER]">1</Publish>
+        </Control>
+        <Control Id="DBNameLabel" Type="Text" X="20" Y="93" Width="290" Height="13" Text="Database Name:" />
+        <Control Id="DBName" Type="Edit" X="20" Y="105" Width="320" Height="18" Property="DBNAME">
+          <Property Id="DBNAME" Value="PolyMon"/>
+          <Publish Property="CONNDBNAME" Value="[DBNAME]">1</Publish>
+        </Control>
+        <Control Id="SecurityLabel" Type="Text" X="20" Y="135" Height="13" Width="290" Text="{\MyFont_Bold}SQL Database Authentication:"/>
+
+        <Control Id="SecurityType" Type="CheckBox" X="40" Y="150" Width="200" Height="15" Property="USEINTEGRATEDSECURITY" Text="Use Integrated Security" CheckBoxValue="1">
+          <Property Id="USEINTEGRATEDSECURITY" Value="1"/>
+          <Publish Property="CONNUSEINTEGRATEDSECURITY" Value="[USEINTEGRATEDSECURITY]">1</Publish>
+        </Control>
+
+        <Control Id="DBUserLabel" Type="Text" X="40" Y="167" Height="13" Width="50" Text="User Name:" />
+        <Control Id="DBUser" Type="Edit" X="90" Y="165" Height="18" Width="200" Property="DBUSER">
+          <Condition Action="disable">USEINTEGRATEDSECURITY=1</Condition>
+          <Condition Action="enable"><![CDATA[USEINTEGRATEDSECURITY<>1]]></Condition>
+          <Publish Property="CONNDBUSER" Value="[DBUSER]">1</Publish>
+        </Control>
+        <Control Id="DBPwdLabel" Type="Text" X="40" Y="185" Height="13" Width="50" Text="Password:"/>
+        <Control Id="DBPwd" Type="Edit" X="90" Y="183" Height="18" Width="200" Property="DBPWD">
+          <Condition Action="disable">USEINTEGRATEDSECURITY=1</Condition>
+          <Condition Action="enable"><![CDATA[USEINTEGRATEDSECURITY<>1]]></Condition>
+          <Publish Property="CONNDBPWD" Value="[DBPWD]">1</Publish>
+        </Control>
+
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="Next" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="Back" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="Cancel">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+      </Dialog>
+
+
+      <Dialog Id="ConnectionsDlg" Width="370" Height="270" Title="[ProductName] Setup">
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="30" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}PolyMon Manager/Executive Configuration" />
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="30" Transparent="yes" NoPrefix="yes" Text="Please specify configuration settings for PolyMon Manager/Executive." />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+
+        <Control Id="DBServerLabel" Type="Text" X="20" Y="50" Width="70" Height="18" Text="Database Server:" />
+        <Control Id="DBServer" Type="Edit" X="90" Y="48" Width="250" Height="18" Property="CONNDBSERVER"/>
+
+        <Control Id="DBNameLabel" Type="Text" X="20" Y="70" Width="70" Height="18" Text="Database Name:" />
+        <Control Id="DBName" Type="Edit" X="90" Y="68" Width="250" Height="18" Property="CONNDBNAME" Text="[DBNAME]" />
+
+        <Control Id="SecurityLabel" Type="Text" X="20" Y="92" Height="13" Width="290" Text="{\MyFont_Bold}SQL Database Authentication:"/>
+
+        <Control Id="SecurityType" Type="CheckBox" X="40" Y="105" Width="200" Height="15" Property="CONNUSEINTEGRATEDSECURITY" Text="Use Integrated Security" CheckBoxValue="1">
+          <Property Id="CONNUSEINTEGRATEDSECURITY" Value="1"/>
+        </Control>
+
+        <Control Id="DBUserLabel" Type="Text" X="40" Y="122" Height="18" Width="50" Text="User Name:"/>
+        <Control Id="DBUser" Type="Edit" X="90" Y="120" Height="18" Width="200" Property="CONNDBUSER">
+          <Condition Action="disable">CONNUSEINTEGRATEDSECURITY=1</Condition>
+          <Condition Action="enable"><![CDATA[CONNUSEINTEGRATEDSECURITY<>1]]></Condition>
+        </Control>
+
+        <Control Id="DBPwdLabel" Type="Text" X="40" Y="141" Height="18" Width="50" Text="Password:"/>
+        <Control Id="DBPwd" Type="Edit" X="90" Y="139" Height="18" Width="200" Property="CONNDBPWD">
+          <Condition Action="disable">CONNUSEINTEGRATEDSECURITY=1</Condition>
+          <Condition Action="enable"><![CDATA[CONNUSEINTEGRATEDSECURITY<>1]]></Condition>
+        </Control>
+
+        <Control Id="ExecutiveLabel" Type="Text" X="20" Y="162" Width="80" Height="15" Text="{\MyFont_Bold}Service Settings:"/>
+        <Control Id="ExecutiveLabelPart2" Type="Text" X="100" Y="162" Width="250" Height="15" Text="{\MyFont_Italic}(only applicable if you selected to install PolyMon Executive)"/>
+        <Control Id="ServiceUser" Type="CheckBox" X="40" Y="175" Width="200" Height="18" Property="USELOCALSYSTEMACCOUNT" Text="Use Local System Account" CheckBoxValue="1">
+          <Property Id="USELOCALSYSTEMACCOUNT" Value="1"/>
+        </Control>
+
+        <Control Id="ServiceUserIDLabel" Type="Text" X="40" Y="195" Width="50" Height="18" Text="Account:"/>
+        <Control Id="ServiceUserID" Type="Edit" X="90" Y="193" Width="200" Height="18" Property="SERVICEACCOUNTUSER">
+          <Condition Action="disable">USELOCALSYSTEMACCOUNT=1</Condition>
+          <Condition Action="enable"><![CDATA[USELOCALSYSTEMACCOUNT<>1]]></Condition>
+        </Control>
+
+        <Control Id="ServiceUserPwdLabel" Type="Text" X="40" Y="214" Width="50" Height="15" Text="Password:"/>
+        <Control Id="ServiceUserPwd" Type="Edit" X="90" Y="212" Width="200" Height="18" Property="SERVICEACCOUNTPWD">
+          <Condition Action="disable">USELOCALSYSTEMACCOUNT=1</Condition>
+          <Condition Action="enable"><![CDATA[USELOCALSYSTEMACCOUNT<>1]]></Condition>
+        </Control>
+
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="Next" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="Back" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="Cancel">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+
+
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SrcRoot)\Documentation\Manuals\PolyMonLicense.rtf"/>
+
+    <Binary Id="SQLScripts"  SourceFile="$(var.SrcRoot)\\PolymonSQL\Create Scripts\DB Version 1.30.sql"/>
+    <Util:User Id="SQLUser" Name="[DBUSER]" Password="[DBPWD]"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <Component Id="PolyMonDB_SQLSecurity" Guid="616F9DD4-C441-45a6-8047-F5A2939201E8">
+        <Condition><![CDATA[USEINTEGRATEDSECURITY<>1]]></Condition>
+        <Sql:SqlDatabase Id="DBCreate_SQL" Database="[DBNAME]" Server="[DBSERVER]"  CreateOnInstall="yes" DropOnUninstall="no" ConfirmOverwrite="yes"
+								 User="SQLUser">
+          <Sql:SqlScript Id="DBSetup_SQL" ExecuteOnInstall="yes" BinaryKey="SQLScripts" />
+        </Sql:SqlDatabase>
+      </Component>
+      <Component Id="PolyMonDB_IntegratedSecurity" Guid="4945DED3-9BC1-43df-B9AB-2DCE3852C6CC">
+        <Condition>USEINTEGRATEDSECURITY=1</Condition>
+        <Sql:SqlDatabase Id="DBCreate_Intregrated" Database="[DBNAME]" Server="[DBSERVER]"  CreateOnInstall="yes" DropOnUninstall="no" ConfirmOverwrite="yes">
+          <Sql:SqlScript Id="DBSetup_Integrated" ExecuteOnInstall="yes" BinaryKey="SQLScripts" />
+        </Sql:SqlDatabase>
+      </Component>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="PolyMon"/>
+      </Directory>
+
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="PolyMonExRoot" Name="PolyMon">
+          <Directory Id="MANAGERINSTALLDIR" Name="PolyMon Manager">
+            <Component Id="PolyMonManager" Guid="4fc970c4-1c63-4e29-8c2e-e093cc9fe600">
+              <RemoveFolder Id="ShortCutFolder" Directory="ProgramMenuDir" On="uninstall"/>
+
+              <File Id="PM_PolyMonManager" Name="PolyMonManager.exe" DiskId="1" Source="$(var.SrcRoot)\PolyMonManager\bin\polymonmanager.exe">
+                <Shortcut Id="PM_PolyMonManagerShortcut" Advertise="yes" Name="PolyMon Manager" Directory="ProgramMenuDir"
+										  WorkingDirectory="MANAGERINSTALLDIR" Icon="PolyMonManagerIcon.exe">
+                  <Icon Id="PolyMonManagerIcon.exe" SourceFile="$(var.SrcRoot)\PolyMonManager\bin\polymonmanager.exe"/>
+                </Shortcut>
+              </File>
+
+              <File Id="PM_Config" Name="PolyMonManager.exe.config" DiskId="1" Source="$(var.SrcRoot)\PolyMonManager\bin\polymonmanager.exe.config"/>
+
+              <File Id="PM_License" Name="PolyMonLicense.pdf" DiskId="1" Source="$(var.SrcRoot)\Documentation\Manuals\PolyMonLicense.pdf"/>
+              <File Id="PM_GenericMonitor" Name="GenericMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitor\bin\GenericMonitor.dll"/>
+              <File Id="PM_MSScriptControl" Name="Interop.MSScriptControl.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitor\bin\Interop.MSScriptControl.dll"/>
+              <File Id="PM_GenericMonitorEditor" Name="GenericMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitorEditor\bin\GenericMonitorEditor.dll"/>
+              <File Id="PM_GenericXMLEditor" Name="GenericXMLEditor.dll" DiskId="1" Source="$(var.SrcRoot)\GenericXMLEditor\bin\GenericXMLEditor.dll"/>
+              <File Id="PM_PolyMon" Name="PolyMon.dll" DiskId="1" Source="$(var.SrcRoot)\PolyMon\bin\PolyMon.dll"/>
+              <File Id="PM_PolyMonNotifier" Name="PolyMonNotifier.dll" Source="$(var.SrcRoot)\PolyMonNotifier\bin\PolyMonNotifier.dll"/>
+              <File Id="PM_ZedGraph" Name="ZedGraph.dll" DiskId="1" Source="$(var.SrcRoot)\PolyMonManager\bin\ZedGraph.dll"/>
+              <File Id="PM_NotifyWav" Name="Notify.wav" DiskId="1" Source="$(var.SrcRoot)\PolyMonManager\bin\Notify.wav"/>
+              <File Id="PM_AscendDesign" Name="Ascend.Design.dll" DiskId="1" Source="$(var.AscendRoot)\Ascend.Design.dll"/>
+              <File Id="PM_Ascend" Name="Ascend.dll" DiskId="1" Source="$(var.AscendRoot)\Ascend.dll"/>
+              <File Id="PM_AscendResources" Name="Ascend.Resources.dll" DiskId="1" Source="$(var.AscendRoot)\Ascend.Resources.dll"/>
+              <File Id="PM_AscendWindowsForms" Name="Ascend.Windows.Forms.dll" DiskId="1" Source="$(var.AscendRoot)\Ascend.Windows.Forms.dll"/>
+              <File Id="PM_QueueEmail" Name="AlertRecap_Email.xsl" DiskId="1" Source="$(var.SrcRoot)\PolyMonNotifier\bin\AlertRecap_Email.xsl"/>
+              <File Id="PM_HeartbeatEmail" Name="Heartbeat_Email.xsl" DiskId="1" Source="$(var.SrcRoot)\PolyMonNotifier\bin\Heartbeat_Email.xsl"/>
+            </Component>
+            <Component Id="PolyMonHelp" Guid="E6EEFA6E-D4EF-4787-90F8-B279643FD8EE">
+              <File Id="PM_PolyMonHelp" Name="Polymon.chm" DiskId="1" Source="$(var.SrcRoot)\Documentation\Help Files\polymon.chm">
+                <Shortcut Id="PM_HelpShortcut" Advertise="yes" Name="PolyMon Help" Directory="ProgramMenuDir"
+										  WorkingDirectory="MANAGERINSTALLDIR" Icon="PolyMonHelpIcon.ico">
+                  <Icon Id="PolyMonHelpIcon.ico" SourceFile="$(var.SrcRoot)\Documentation\Std Icons\Main\Help.ico"/>
+                </Shortcut>
+              </File>
+            </Component>
+            <Component Id="PM_Config_Integrated" Guid="F9DFF0D2-54F1-4938-A0B9-B082528E769B">
+              <Condition>CONNUSEINTEGRATEDSECURITY=1</Condition>
+              <CreateFolder/>
+              <Util:XmlFile Id="XmlSettings1" File="[MANAGERINSTALLDIR]polymonmanager.exe.config"
+										  Action="setValue" ElementPath="/configuration/appSettings/add[\[]@key='SQLConn'[\]]/@value"
+										  Value="Data Source=[CONNDBSERVER]; Initial Catalog=[CONNDBNAME]; Integrated Security=SSPI;"/>
+            </Component>
+            <Component Id="PM_Config_NonIntegrated" Guid="321AAFBC-495C-4167-8765-A55B2AA9576D">
+              <Condition><![CDATA[CONNUSEINTEGRATEDSECURITY<>1]]></Condition>
+              <CreateFolder/>
+              <Util:XmlFile Id="XmlSettings2" File="[MANAGERINSTALLDIR]polymonmanager.exe.config"
+										  Action="setValue" ElementPath="/configuration/appSettings/add[\[]@key='SQLConn'[\]]/@value"
+										  Value="Data Source=[CONNDBSERVER]; Initial Catalog=[CONNDBNAME]; User ID=[CONNDBUSER]; Password=[CONNDBPWD]"/>
+            </Component>
+            <Directory Id="Monitors" Name="Monitors">
+              <Component Id="PolyMonManagerMonitors" Guid="901E2554-2A46-433f-ABB8-8156D716E215">
+                <File Id="PMM_CPUMonitor" Name="CPUMonitor.dll"  DiskId="1" Source="$(var.SrcRoot)\CPUMonitor\bin\Release\CPUMonitor.dll"/>
+                <File Id="PMM_DiskMonitor" Name="DiskMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\DiskMonitor\bin\Release\DiskMonitor.dll"/>
+                <File Id="PMM_FileMonitor" Name="FileMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\FileMonitor\bin\FileMonitor.dll"/>
+                <File Id="PMM_PerfMonitor" Name="PerfMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\PerfMonitor\bin\PerfMonitor.dll"/>
+                <File Id="PMM_PingMonitor" Name="PingMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\PingMonitor\bin\PingMonitor.dll"/>
+                <File Id="PMM_PowerShellMonitor" Name="PowerShellMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\PowerShellMonitor\bin\Release\PowerShellMonitor.dll"/>
+                <File Id="PMM_ServiceMonitor" Name="ServiceMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\ServiceMonitor\bin\ServiceMonitor.dll"/>
+                <File Id="PMM_SNMPMonitor" Name="SNMPMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\SNMPMonitor\bin\SNMPMonitor.dll"/>
+                <File Id="PMM_SNMP" Name="SNMP.dll" DiskId="1" Source="$(var.SrcRoot)\SNMPMonitor\bin\SNMP.dll"/>
+                <File Id="PMM_SQLMonitor" Name="SQLMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\SQLMonitor\bin\SQLMonitor.dll"/>
+                <File Id="PMM_TCPPortMonitor" Name="TCPPortMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\TCPMonitor\bin\TCPPortMonitor.dll"/>
+                <File Id="PMM_URLMonitor" Name="URLMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\URLMonitor\bin\URLMonitor.dll"/>
+                <File Id="PMM_URLXMLMonitor" Name="URLXMLMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\URLXMLMonitor\bin\URLXMLMonitor.dll"/>
+                <File Id="PMM_WMIMonitor" Name="WMIMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\WMIMonitor\bin\WMIMonitor.dll"/>
+
+                <File Id="PMM_GenericMonitor" Name="GenericMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitor\bin\GenericMonitor.dll"/>
+                <File Id="PMM_MSScriptControl" Name="Interop.MSScriptControl.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitor\bin\Interop.MSScriptControl.dll"/>
+                <File Id="PMM_GenericMonitorEditor" Name="GenericMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitorEditor\bin\GenericMonitorEditor.dll"/>
+                <File Id="PMM_GenericXMLEditor" Name="GenericXMLEditor.dll" DiskId="1" Source="$(var.SrcRoot)\PolyMonManager\bin\GenericXMLEditor.dll"/>
+                <File Id="PMM_PolyMon" Name="PolyMon.dll" DiskId="1" Source="$(var.SrcRoot)\PolyMon\bin\PolyMon.dll"/>
+
+                <File Id="PMM_CPUMonitorEditor" Name="CPUMonitorEditor.dll"  DiskId="1" Source="$(var.SrcRoot)\CPUMonitorEditor\bin\Release\CPUMonitorEditor.dll"/>
+                <File Id="PMM_DiskMonitorEditor" Name="DiskMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\DiskMonitorEditor\bin\Release\DiskMonitorEditor.dll"/>
+                <File Id="PMM_FileMonitorEditor" Name="FileMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\FileMonitorEditor\bin\FileMonitorEditor.dll"/>
+                <File Id="PMM_PerfMonitorEditor" Name="PerfMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\PerfMonitorEditor\bin\PerfMonitorEditor.dll"/>
+                <File Id="PMM_PingMonitorEditor" Name="PingMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\PingMonitorEditor\bin\PingMonitorEditor.dll"/>
+                <File Id="PMM_PowerShellMonitorEditor" Name="PowerShellMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\PowerShellMonitorEditor\bin\Release\PowerShellMonitorEditor.dll"/>
+                <File Id="PMM_ServiceMonitorEditor" Name="ServiceMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\ServiceMonitorEditor\bin\ServiceMonitorEditor.dll"/>
+                <File Id="PMM_SNMPMonitorEditor" Name="SNMPMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\SNMPMonitorEditor\bin\SNMPMonitorEditor.dll"/>
+                <File Id="PMM_TCPPortMonitorEditor" Name="TCPPortMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\TCPPortMonitorEditor\bin\TCPPortMonitorEditor.dll"/>
+                <File Id="PMM_URLMonitorEditor" Name="URLMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\URLMonitorEditor\bin\URLMonitorEditor.dll"/>
+                <File Id="PMM_URLXMLMonitorEditor" Name="URLXMLMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\URLXMLMonitorEditor\bin\URLXMLMonitorEditor.dll"/>
+                <File Id="PMM_WMIMonitorEditor" Name="WMIMonitorEditor.dll" DiskId="1" Source="$(var.SrcRoot)\WMIMonitorEditor\bin\WMIMonitorEditor.dll"/>
+              </Component>
+            </Directory>
+          </Directory>
+
+          <Directory Id="EXECINSTALLDIR" Name="PolyMon Executive">
+            <Component Id="PolyMonExecutiveReqs" Guid="4DE7E1D0-47FE-4dec-89B6-2071A4C222BB">
+              <File Id="PE_PolyMonExecutive" Name="PolyMonExecutive.exe.config" Source="$(var.SrcRoot)\PolyMonExecutive\bin\PolyMonExecutive.exe.config"/>
+              <File Id="PE_GenericMonitor" Name="GenericMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitor\bin\GenericMonitor.dll"/>
+              <File Id="PE_MSScriptControl" Name="Interop.MSScriptControl.dll" DiskId="1" Source="$(var.SrcRoot)\GenericMonitor\bin\Interop.MSScriptControl.dll"/>
+              <File Id="PE_PolyMon" Name="PolyMon.dll" DiskId="1" Source="$(var.SrcRoot)\PolyMon\bin\PolyMon.dll"/>
+              <File Id="PE_PolyMonNotifier" Name="PolyMonNotifier.dll" Source="$(var.SrcRoot)\PolyMonNotifier\bin\PolyMonNotifier.dll"/>
+              <File Id="PE_License" Name="PolyMonLicense.pdf" DiskId="1" Source="$(var.SrcRoot)\Documentation\Manuals\PolyMonLicense.pdf"/>
+
+              <File Id="PE_CPUMonitor" Name="CPUMonitor.dll"  DiskId="1" Source="$(var.SrcRoot)\CPUMonitor\bin\Release\CPUMonitor.dll"/>
+              <File Id="PE_DiskMonitor" Name="DiskMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\DiskMonitor\bin\Release\DiskMonitor.dll"/>
+              <File Id="PE_FileMonitor" Name="FileMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\FileMonitor\bin\FileMonitor.dll"/>
+              <File Id="PE_PerfMonitor" Name="PerfMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\PerfMonitor\bin\PerfMonitor.dll"/>
+              <File Id="PE_PingMonitor" Name="PingMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\PingMonitor\bin\PingMonitor.dll"/>
+              <File Id="PE_PowerShellMonitor" Name="PowerShellMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\PowerShellMonitor\bin\Release\PowerShellMonitor.dll"/>
+              <File Id="PE_ServiceMonitor" Name="ServiceMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\ServiceMonitor\bin\ServiceMonitor.dll"/>
+              <File Id="PE_SNMPMonitor" Name="SNMPMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\SNMPMonitor\bin\SNMPMonitor.dll"/>
+              <File Id="PE_SNMP" Name="SNMP.dll" DiskId="1" Source="$(var.SrcRoot)\SNMPMonitor\bin\SNMP.dll"/>
+              <File Id="PE_SQLMonitor" Name="SQLMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\SQLMonitor\bin\SQLMonitor.dll"/>
+              <File Id="PE_TCPPortMonitor" Name="TCPPortMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\TCPMonitor\bin\TCPPortMonitor.dll"/>
+              <File Id="PE_URLMonitor" Name="URLMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\URLMonitor\bin\URLMonitor.dll"/>
+              <File Id="PE_URLXMLMonitor" Name="URLXMLMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\URLXMLMonitor\bin\URLXMLMonitor.dll"/>
+              <File Id="PE_WMIMonitor" Name="WMIMonitor.dll" DiskId="1" Source="$(var.SrcRoot)\WMIMonitor\bin\WMIMonitor.dll"/>
+              <File Id="PE_QueueEmail" Name="AlertRecap_Email.xsl" DiskId="1" Source="$(var.SrcRoot)\PolyMonNotifier\bin\AlertRecap_Email.xsl"/>
+              <File Id="PE_HeartbeatEmail" Name="Heartbeat_Email.xsl" DiskId="1" Source="$(var.SrcRoot)\PolyMonNotifier\bin\Heartbeat_Email.xsl"/>
+            </Component>
+
+            <Component Id="PolyMonExecutive_SYSTEM" Guid="A7257F1B-A9EA-4ca9-B3DA-76F25D1B9566">
+              <Condition>USELOCALSYSTEMACCOUNT=1</Condition>
+              <CreateFolder/>
+              <File Id="Executive_SYSTEM" Name="PolyMonExecutive.exe" DiskId="1"  KeyPath="yes" Source="$(var.SrcRoot)\PolyMonExecutive\bin\polymonexecutive.exe"/>
+              <ServiceInstall Id="PolyMonExecutive_SYSTEM" Name="PolyMonExecutive" DisplayName="PolyMon Executive" Interactive="no"
+								 Description="PolyMon Executive that runs monitors and processes notifications."
+								 Start="auto" ErrorControl="critical" Type="ownProcess">
+              </ServiceInstall>
+              <ServiceControl Id="PolyMonExecutiveControl_SYSTEM" Name="PolyMonExecutive" Remove="uninstall" Stop="both"  Wait="yes"/>
+            </Component>
+
+            <Component Id="PolyMonExecutive_CUSTOM" Guid="866C9B3D-2CCD-4f8a-9C6B-6979A4129504">
+              <Condition><![CDATA[USELOCALSYSTEMACCOUNT<>1]]></Condition>
+              <CreateFolder/>
+              <File  Id="Executive_CUSTOM" Name="PolyMonExecutive.exe" DiskId="1"  KeyPath="yes" Source="$(var.SrcRoot)\PolyMonExecutive\bin\polymonexecutive.exe"/>
+              <ServiceInstall Id="PolyMonExecutive_CUSTOM" Name="PolyMonExecutive" DisplayName="PolyMon Executive" Interactive="no"
+								 Description="PolyMon Executive that runs monitors and processes notifications."
+								 Start="auto" ErrorControl="critical" Type="ownProcess"
+											 Account="[SERVICEACCOUNTUSER]" Password="[SERVICEACCOUNTPWD]"></ServiceInstall>
+              <ServiceControl Id="PolyMonExecutiveControl_CUSTOM" Name="PolyMonExecutive" Remove="uninstall" Stop="both" Wait="yes"/>
+            </Component>
+
+            <Component Id="PE_Config_Integrated" Guid="83EA785F-DA0B-4d79-A7C5-15F67AAF483E">
+              <Condition>CONNUSEINTEGRATEDSECURITY=1</Condition>
+              <CreateFolder/>
+              <Util:XmlFile Id="XmlSettings3" File="[EXECINSTALLDIR]polymonexecutive.exe.config"
+										  Action="setValue" ElementPath="/configuration/appSettings/add[\[]@key='SQLConn'[\]]/@value"
+										  Value="Data Source=[CONNDBSERVER]; Initial Catalog=[CONNDBNAME]; Integrated Security=SSPI;"/>
+            </Component>
+            <Component Id="PE_Config_NonIntegrated" Guid="AC2FD5FA-E31F-433c-A383-BA5C01E1BC3B">
+              <Condition><![CDATA[CONNUSEINTEGRATEDSECURITY<>1]]></Condition>
+              <CreateFolder/>
+              <Util:XmlFile Id="XmlSettings4" File="[EXECINSTALLDIR]polymonexecutive.exe.config"
+										  Action="setValue" ElementPath="/configuration/appSettings/add[\[]@key='SQLConn'[\]]/@value"
+										  Value="Data Source=[CONNDBSERVER]; Initial Catalog=[CONNDBNAME]; User ID=[CONNDBUSER]; Password=[CONNDBPWD]"/>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="PolyMonDB" Title="PolyMon Database" Level="1">
+      <ComponentRef Id="PolyMonDB_IntegratedSecurity"/>
+      <ComponentRef Id="PolyMonDB_SQLSecurity"/>
+    </Feature>
+    <Feature Id="PolyMonExecutive" Title="PolyMon Executive" Level="1" ConfigurableDirectory="EXECINSTALLDIR">
+      <ComponentRef Id="PolyMonExecutiveReqs"/>
+      <ComponentRef Id="PolyMonExecutive_SYSTEM"/>
+      <ComponentRef Id="PolyMonExecutive_CUSTOM"/>
+      <ComponentRef Id="PE_Config_Integrated"/>
+      <ComponentRef Id="PE_Config_NonIntegrated"/>
+    </Feature>
+    <Feature Id="PolyMonManager" Title="PolyMon Manager" Level="1" ConfigurableDirectory="MANAGERINSTALLDIR">
+      <ComponentRef Id="PolyMonManager" />
+      <ComponentRef Id="PolyMonHelp" />
+      <ComponentRef Id="PolyMonManagerMonitors"/>
+      <ComponentRef Id="PM_Config_Integrated"/>
+      <ComponentRef Id="PM_Config_NonIntegrated"/>
+    </Feature>
+  </Product>
+  
+</Wix>
